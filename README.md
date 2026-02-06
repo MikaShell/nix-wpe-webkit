@@ -33,7 +33,6 @@ nix build .#wpewebkit
 1. Create a cache at https://app.cachix.org.
 2. In GitHub repo settings, add:
    - Secret: `CACHIX_AUTH_TOKEN` (write token from Cachix).
-   - Variable: `CACHIX_CACHE_NAME` (your cache name, for example `nix-wpe-webkit`).
 3. Push to `main` to trigger `.github/workflows/ci.yml`.
 
 Users can enable your cache with:
