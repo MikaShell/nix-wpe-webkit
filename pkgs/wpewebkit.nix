@@ -58,7 +58,6 @@
   xdg-dbus-proxy,
   zlib,
 }:
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "wpewebkit";
   version = "2.50.4";
@@ -106,7 +105,7 @@ stdenv.mkDerivation (finalAttrs: {
     gst_all_1.gst-plugins-base
     gst_all_1.gstreamer
     icu
-    (harfbuzz.override { withIcu = true; })
+    (harfbuzz.override {withIcu = true;})
     lcms2
     libavif
     libdrm
@@ -142,10 +141,11 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "PORT" "WPE")
     (lib.cmakeBool "ENABLE_DOCUMENTATION" true)
     (lib.cmakeBool "ENABLE_INTROSPECTION" true)
-    (lib.cmakeBool "ENABLE_MINIBROWSER" true)
+    (lib.cmakeBool "ENABLE_MINIBROWSER" false)
     (lib.cmakeBool "ENABLE_SPEECH_SYNTHESIS" false)
     (lib.cmakeBool "ENABLE_WPE_PLATFORM" true)
     (lib.cmakeBool "USE_LIBBACKTRACE" false)
+    (lib.cmakeBool "DENABLE_WPE_PLATFORM_DRM" true)
   ];
 
   postFixup = ''
@@ -160,7 +160,7 @@ stdenv.mkDerivation (finalAttrs: {
     simple-compilation = stdenv.mkDerivation {
       name = "wpewebkit-test-simple-compilation";
 
-      nativeBuildInputs = [ pkg-config ];
+      nativeBuildInputs = [pkg-config];
       buildInputs = [
         finalAttrs.finalPackage
         glib
@@ -206,6 +206,6 @@ stdenv.mkDerivation (finalAttrs: {
       }
     ];
     platforms = lib.platforms.linux;
-    pkgConfigModules = [ "wpe-webkit-2.0" ];
+    pkgConfigModules = ["wpe-webkit-2.0"];
   };
 })
