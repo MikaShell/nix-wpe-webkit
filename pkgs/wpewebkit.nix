@@ -145,7 +145,10 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeBool "ENABLE_SPEECH_SYNTHESIS" false)
     (lib.cmakeBool "ENABLE_WPE_PLATFORM" true)
     (lib.cmakeBool "USE_LIBBACKTRACE" false)
-    (lib.cmakeBool "DENABLE_WPE_PLATFORM_DRM" true)
+    (lib.cmakeBool "DENABLE_WPE_PLATFORM_DRM" false)
+    (lib.cmakeBool "ENABLE_GPU_PROCESS" true)
+    (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
+    (lib.cmakeFeature "LTO_MODE" "thin")
   ];
 
   postFixup = ''
