@@ -1,4 +1,5 @@
 {
+  addDriverRunpath,
   at-spi2-core,
   bison,
   bubblewrap,
@@ -65,7 +66,6 @@ stdenv.mkDerivation (finalAttrs: {
   outputs = [
     "out"
     "dev"
-    "devdoc"
   ];
 
   outputBin = "dev";
@@ -137,23 +137,34 @@ stdenv.mkDerivation (finalAttrs: {
     zlib
   ];
 
+  postPatch = let
+    fixScript = builtins.toFile "fix-bubblewrap.py" (
+      lib.replaceStrings
+        ["@storeDir@" "@driverLink@"]
+        [builtins.storeDir (addDriverRunpath.driverLink or "/run/opengl-driver")]
+        (builtins.readFile ./fix-bubblewrap.py)
+    );
+  in ''
+    python3 ${fixScript}
+  '';
+
   cmakeFlags = [
     (lib.cmakeFeature "PORT" "WPE")
-    (lib.cmakeBool "ENABLE_DOCUMENTATION" true)
-    (lib.cmakeBool "ENABLE_INTROSPECTION" true)
+    (lib.cmakeBool "ENABLE_WPE_PLATFORM" true)
+    (lib.cmakeBool "ENABLE_WPE_PLATFORM_WAYLAND" false)
+    (lib.cmakeBool "ENABLE_WPE_PLATFORM_DRM" false)
+    (lib.cmakeBool "ENABLE_WPE_PLATFORM_HEADLESS" true)
+
+    (lib.cmakeBool "ENABLE_DOCUMENTATION" false)
+    (lib.cmakeBool "ENABLE_INTROSPECTION" false)
     (lib.cmakeBool "ENABLE_MINIBROWSER" false)
     (lib.cmakeBool "ENABLE_SPEECH_SYNTHESIS" false)
-    (lib.cmakeBool "ENABLE_WPE_PLATFORM" true)
     (lib.cmakeBool "USE_LIBBACKTRACE" false)
-    (lib.cmakeBool "DENABLE_WPE_PLATFORM_DRM" false)
-    (lib.cmakeBool "ENABLE_GPU_PROCESS" true)
+
     (lib.cmakeFeature "CMAKE_BUILD_TYPE" "Release")
     (lib.cmakeFeature "LTO_MODE" "thin")
+    (lib.cmakeBool "ENABLE_GPU_PROCESS" true)
   ];
-
-  postFixup = ''
-    moveToOutput "share/doc" "$devdoc"
-  '';
 
   passthru.tests = {
     pkg-config = testers.hasPkgConfigModules {
