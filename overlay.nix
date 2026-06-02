@@ -1,3 +1,3 @@
 final: prev: {
-  wpewebkit = final.callPackage ./pkgs/wpewebkit.nix { };
+  wpewebkit = final.callPackage ./pkgs/wpewebkit.nix {};
 }

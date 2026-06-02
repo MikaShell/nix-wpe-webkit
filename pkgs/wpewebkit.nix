@@ -140,9 +140,9 @@ stdenv.mkDerivation (finalAttrs: {
   postPatch = let
     fixScript = builtins.toFile "fix-bubblewrap.py" (
       lib.replaceStrings
-        ["@storeDir@" "@driverLink@"]
-        [builtins.storeDir (addDriverRunpath.driverLink or "/run/opengl-driver")]
-        (builtins.readFile ./fix-bubblewrap.py)
+      ["@storeDir@" "@driverLink@"]
+      [builtins.storeDir (addDriverRunpath.driverLink or "/run/opengl-driver")]
+      (builtins.readFile ./fix-bubblewrap.py)
     );
   in ''
     python3 ${fixScript}
@@ -153,7 +153,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeBool "ENABLE_WPE_PLATFORM" true)
     (lib.cmakeBool "ENABLE_WPE_PLATFORM_WAYLAND" false)
     (lib.cmakeBool "ENABLE_WPE_PLATFORM_DRM" false)
-    (lib.cmakeBool "ENABLE_WPE_PLATFORM_HEADLESS" true)
+    (lib.cmakeBool "ENABLE_WPE_PLATFORM_HEADLESS" false)
 
     (lib.cmakeBool "ENABLE_DOCUMENTATION" false)
     (lib.cmakeBool "ENABLE_INTROSPECTION" false)
