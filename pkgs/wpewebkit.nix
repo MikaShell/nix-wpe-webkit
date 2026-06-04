@@ -16,6 +16,7 @@
   gperf,
   gst_all_1,
   harfbuzz,
+  hyphen,
   icu,
   lcms2,
   lib,
@@ -43,6 +44,7 @@
   mesa,
   ninja,
   p11-kit,
+  pcre2,
   perl,
   pkg-config,
   python3,
@@ -61,7 +63,7 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "wpewebkit";
-  version = "2.50.4";
+  version = "2.52.4";
 
   outputs = [
     "out"
@@ -72,7 +74,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "https://wpewebkit.org/releases/wpewebkit-${finalAttrs.version}.tar.xz";
-    hash = "sha256-0gTkBbCXVQh0jAJzwYCQMEqXnhFw/6KgpSj62QGR74c=";
+    hash = "sha256-Aco0zXr4gMA401qpRIL+54WnfbN7YUxYRHXX1Ds6LcA=";
   };
 
   nativeBuildInputs = [
@@ -106,6 +108,7 @@ stdenv.mkDerivation (finalAttrs: {
     gst_all_1.gstreamer
     icu
     (harfbuzz.override {withIcu = true;})
+    hyphen
     lcms2
     libavif
     libdrm
@@ -129,6 +132,7 @@ stdenv.mkDerivation (finalAttrs: {
     libxslt
     mesa
     p11-kit
+    pcre2
     sqlite
     systemd
     wayland
@@ -156,7 +160,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeBool "ENABLE_WPE_PLATFORM_HEADLESS" false)
 
     (lib.cmakeBool "ENABLE_DOCUMENTATION" false)
-    (lib.cmakeBool "ENABLE_INTROSPECTION" false)
+    (lib.cmakeBool "ENABLE_INTROSPECTION" true)
     (lib.cmakeBool "ENABLE_MINIBROWSER" false)
     (lib.cmakeBool "ENABLE_SPEECH_SYNTHESIS" false)
     (lib.cmakeBool "USE_LIBBACKTRACE" false)
